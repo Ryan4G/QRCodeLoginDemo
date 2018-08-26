@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>QRcode Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="qrcode-main">
+            <img src="/qrcode?uid=SESSION_UID" >
+        </div>
+        <div class="qrcode-bottom">
+            <p>扫描二维码进行登录操作</p>
+        </div>
+    </div>
+    
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script>
+        let scanned = function(){
+            jQuery('.qrcode-bottom p').text("已成功扫描，等待手机确认登录");
+        };
+
+        let verified = function(username) {  
+            jQuery('.qrcode-bottom p').text('欢迎您：' + username + '，您已成功登录');
+            
+            // 成功登录后，2秒后跳转，此处重新加载
+            setTimeout(()=>{
+                window.location.reload();
+            }, 2000);
+        };
+
+        let canceled = function(){
+            jQuery('.qrcode-bottom p').text("已取消登录，请重新扫描确认");
+        };
+
+        let longpolling = function (){
+            jQuery.ajax({
+                url: "/verified?uid=SESSION_UID",
+                dataType: "json",
+                cache: false,
+                timeout: 30000,
+                success: function(respond){
+                    let cmdCode = respond.cmd;
+                    let delayTime = 3000;
+
+                    if(cmdCode === "scanned"){
+                        scanned();
+
+                        delayTime = 1000;
+                        setTimeout(longpolling, delayTime);
+                    }
+                    else if (cmdCode === "verified"){
+                        verified(respond.user);
+                    }
+                    else if (cmdCode === "canceled"){
+                        canceled();
+                        setTimeout(longpolling, delayTime);
+                    }
+                    else{
+                        setTimeout(longpolling, delayTime);
+                    }
+                },
+                error: function(){
+                    setTimeout(longpolling, 5000);
+                }
+            });
+        };
+
+        setTimeout(longpolling, 100);
+    </script>
+</body>
+</html>

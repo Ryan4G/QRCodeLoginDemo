@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Login confirm</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container white">
+    <div class="info">
+      <p>Application Name</p>
+      <div class="line"></div>
+      <div class="message">
+        <p>即将登录你的账号，请确认是本人操作</p>
+        
+        <ul>
+          <li>获取你的头像</li>
+          <li>获取你的昵称</li>
+          <li>使用你的账号登录应用</li>
+        </ul>
+
+        <a class="confirm" href="/confirmed?uid=SESSION_UID&operate=confirm">确认登录</a>
+        <a id="cancelBtn" class="cancel" href="#">取消登录</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/jquery-3.3.1.min.js"></script>
+  <script>
+    jQuery('#cancelBtn').click(()=>{
+
+      jQuery.ajax({
+        url: "/confirmed?uid=SESSION_UID&operate=cancel",
+        dataType: "html",
+        success: function (){
+
+          // 微信内置浏览器退出
+          WeixinJSBridge.call('closeWindow');
+        }
+      });
+      
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "qrcodelogindemo",
+  "version": "1.0.0",
+  "description": "Simple pages with JavaScript for scanning QRcode to login. It's combine with three parts, the QRcode display page , the page after scanning QRcode, the page after login successful.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ryan4G/QRCodeLoginDemo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ryan4G/QRCodeLoginDemo/issues"
+  },
+  "homepage": "https://github.com/Ryan4G/QRCodeLoginDemo#readme",
+  "devDependencies": {
+    "express": "^4.16.3",
+    "express-generator": "^4.16.0",
+    "qr-image": "^3.2.0",
+    "uuid-js": "^0.7.5"
+  }
+}
